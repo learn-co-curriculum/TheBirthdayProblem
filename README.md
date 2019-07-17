@@ -1,16 +1,6 @@
 
 # Teacher Notes
 
-## Introduction
-
-This is another recommended first day activity. Remember that the most important aspects are to build a collaborative environment where students are problem solving and actively working together. This activity is meant to help facilitate student interactions as an ice breaker as well as provide an opportunity for problem solving and discussing statistics and introductory programming concepts.
-
-## Suggested Outline for the Day
-
-* Getting Started with Data Science (45 - 90 minutes)
-* **This (or another) Class Programming Exercise** (1 hour +)
-* Other Introductory Activities - Blogging, Getting Acquainted, Discussing Imposter syndrome etc. (time will vary)
-* Learn - Individual Work Time (remainder of day)
 
 ## Lesson Outline
 * Problem Statement (3 minutes)
@@ -29,30 +19,94 @@ This is another recommended first day activity. Remember that the most important
         * How can we repeat this simulation to observe the probability?
         * How can we display this information?
 
-## Prework
-
-No prior prework is required for this lesson.
-
-## Postwork
-
-Lead the class through further orientation activities or direct their attention to learn for individual or paired time to work on introductory materials there.
 
 ## Materials
 
-* Student version of this slide deck: Getting Started with Data Science
+* Student version of this slide deck: The Birthday Problem
 
 # The Birthday Problem
 
 How many people do you need to have at least a 50% chance that 2 people have the same birthday? How many for an 80% chance? How many for a 100%?
 
+## Teacher Notes
+
+Work on building student's problems solving skills and introduce concepts like probability. One conceptual approach to the problem works person by person:
+
+Guide students by asking questions such as:
+
+* When the second person enters the room, what is the probability that they have the same birthday as the first person (1/366)
+* What's the probability that they DON'T have the same birthday? (365/366)
+    * Introduce the concept of a statistical compliment here.
+* Assuming that the first two people didn't have the same birthday, what is the probability that the third person who enters has the same birthday as one of the first two who were already in the room?
+(2/366)
+    * What's the probability that they don't have the same birthday as either of the first two people? (364/366)
+* How can we combine these probabilities to then determine the overall probability that no one has the same birthday out of a group of three people?
+    * This should lead to a discussion of independent events and the fact that we can then multiply these probabilities to find the probability of the compound event: $\frac{365}{366} \cdot \frac{364}{366}$ However, further note that this is the probability of NOT having any same birthdays. To find the probability of having a shared birthday, we need to find the **compliment** of this event ($1- \frac{365}{366} \cdot \frac{364}{366}$)
+* Assuming the first three people didnt have the same birthday, what is the probability that the fourth person has the same birthday as one of these three? (3/366)
+* What is the combined probability that there is a birthday match in a group of four people?
+
+> Note: The denominators above are 366 to include leap years. Feel free to discuss 365 if you prefer.
+
+* How many people do you need to have a 50% chance that 2 people have the same birthday?
+* How could we use python to express this?
+
+
 
 ```python
 # Teacher Notes
-# This solution preview several aspects that will be foreign to students including numpy.
-# Nonetheless, this preview will help frontload concepts to be introduced in the near future.
-# Lead students through this code snippet provides many
-# Potential solution:
+# Iteration 1: the most primitive solution; still requires some guess and checking to find the appropriate group size
+number_students = 24
+prob_no_matches = 1
+for i in range(2,number_students):
+    numerator = 366 - (i-1)
+    denominator = 366
+    prob_no_matches *= (numerator/denominator)
+positive_prob =  1- prob_no_matches
+print("The probability that there is a shared birthday in a group of {} people is: {}".format(number_students, positive_prob))
+```
 
+    The probability that there is a shared birthday in a group of 24 people is: 0.5063230118194602
+
+
+
+```python
+## Teacher Notes:
+
+#Present this first solution, or lead students through its creation.
+#Then ask how could we adapt this so that we don't need to use guess and check?
+
+# A: Use a while clause:
+
+threshold = 1
+prob_no_matches = 1
+positive_prob = 0
+number_students = 2
+while positive_prob < threshold:
+    numerator = 366 - (number_students - 1)
+    denominator = 366
+    prob_no_matches *= (numerator/denominator)
+    number_students += 1
+    positive_prob = 1 - prob_no_matches
+print("To achieve a {} probability, you need a group of {} people.".format(threshold, number_students))
+print("The probability that there is a shared birthday in a group of {} people is: {}".format(number_students, positive_prob))
+
+#This particular case of 1 can also lead to an interesting potential discussion of rounding errors, to truly achieve certainty we would need 367 individuals.
+#Although, having every unique birthday covered birthday with no matches is a preposterously rare event by random chance alone.
+#Classically, this is known as the pigeon hole problem (You need a pigeon to fill all the holes before you can be guaranteed that two pigeons share a nest.)
+```
+
+    To achieve a 1 probability, you need a group of 155 people.
+    The probability that there is a shared birthday in a group of 155 people is: 1.0
+
+
+
+```python
+# Teacher Notes
+
+# This solution preview several aspects that will be foreign to students including numpy.
+# Nonetheless, the preview may help frontload concepts to be introduced in the near future.
+# This may be appropriate to also save for later once students have developed more skills and can revisit the problem with that new toolset.
+# Advanced  solution:
 import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -88,5 +142,5 @@ plt.ylabel('Probability of Shared Birthday')
 
 
 
-![png](TheBirthdayProblem-Teacher-Version_files/TheBirthdayProblem-Teacher-Version_2_1.png)
+![png](TheBirthdayProblem-Teacher-Version_files/TheBirthdayProblem-Teacher-Version_5_1.png)
 
