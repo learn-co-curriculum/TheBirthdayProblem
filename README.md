@@ -1,3 +1,8 @@
+**Course**: Data Science   <br/>
+**Mod**:    1                 <br/>
+**Topic**:   The Birthday Problem                <br/>
+**Amount of time**: 1 hour <br/>
+**Author**: Matthew Mitchell matt.mitchell@flatironschool.com
 
 # Teacher Notes
 
